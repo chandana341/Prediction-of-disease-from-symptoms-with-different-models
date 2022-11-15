@@ -1,0 +1,896 @@
+
+#Importing Libraries
+​
+from mpl_toolkits.mplot3d import Axes3D
+from sklearn.preprocessing import StandardScaler
+import matplotlib.pyplot as plt
+from tkinter import *
+import tkinter as tk
+from tkinter import LabelFrame, Label, Tk#, Canvas
+import numpy as np
+import pandas as pd
+import os
+#List of the symptoms is listed here in list l1.
+​
+list_of_diseases = ['back_pain','constipation','abdominal_pain','diarrhoea','mild_fever','yellow_urine',
+    'yellowing_of_eyes','acute_liver_failure','fluid_overload','swelling_of_stomach',
+    'swelled_lymph_nodes','malaise','blurred_and_distorted_vision','phlegm','throat_irritation',
+    'redness_of_eyes','sinus_pressure','runny_nose','congestion','chest_pain','weakness_in_limbs',
+    'fast_heart_rate','pain_during_bowel_movements','pain_in_anal_region','bloody_stool',
+    'irritation_in_anus','neck_pain','dizziness','cramps','bruising','obesity','swollen_legs',
+    'swollen_blood_vessels','puffy_face_and_eyes','enlarged_thyroid','brittle_nails',
+    'swollen_extremeties','excessive_hunger','extra_marital_contacts','drying_and_tingling_lips',
+    'slurred_speech','knee_pain','hip_joint_pain','muscle_weakness','stiff_neck','swelling_joints',
+    'movement_stiffness','spinning_movements','loss_of_balance','unsteadiness',
+    'weakness_of_one_body_side','loss_of_smell','bladder_discomfort','foul_smell_of urine',
+    'continuous_feel_of_urine','passage_of_gases','internal_itching','toxic_look_(typhos)',
+    'depression','irritability','muscle_pain','altered_sensorium','red_spots_over_body','belly_pain',
+    'abnormal_menstruation','dischromic _patches','watering_from_eyes','increased_appetite','polyuria','family_history','mucoid_sputum',
+    'rusty_sputum','lack_of_concentration','visual_disturbances','receiving_blood_transfusion',
+    'receiving_unsterile_injections','coma','stomach_bleeding','distention_of_abdomen',
+    'history_of_alcohol_consumption','fluid_overload','blood_in_sputum','prominent_veins_on_calf',
+    'palpitations','painful_walking','pus_filled_pimples','blackheads','scurring','skin_peeling',
+    'silver_like_dusting','small_dents_in_nails','inflammatory_nails','blister','red_sore_around_nose',
+    'yellow_crust_ooze']
+#List of Diseases is listed in list disease.
+​
+diseases=['Fungal infection', 'Allergy', 'GERD', 'Chronic cholestasis',
+       'Drug Reaction', 'Peptic ulcer diseae', 'AIDS', 'Diabetes ',
+       'Gastroenteritis', 'Bronchial Asthma', 'Hypertension ', 'Migraine',
+       'Cervical spondylosis', 'Paralysis (brain hemorrhage)', 'Jaundice',
+       'Malaria', 'Chicken pox', 'Dengue', 'Typhoid', 'hepatitis A',
+       'Hepatitis B', 'Hepatitis C', 'Hepatitis D', 'Hepatitis E',
+       'Alcoholic hepatitis', 'Tuberculosis', 'Common Cold', 'Pneumonia',
+       'Dimorphic hemmorhoids(piles)', 'Heart attack', 'Varicose veins',
+       'Hypothyroidism', 'Hyperthyroidism', 'Hypoglycemia',
+       'Osteoarthristis', 'Arthritis',
+       '(vertigo) Paroymsal  Positional Vertigo', 'Acne',
+       'Urinary tract infection', 'Psoriasis', 'Impetigo']
+​
+#disease = [df['prognosis'].unique()]
+#print(disease)
+list_of_disease=[]
+for i in range(0,len(list_of_diseases)):
+    list_of_disease.append(0)
+print(list_of_disease)
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+#Reading the training .csv file
+data=pd.read_csv("Training.csv")
+Data1= pd.read_csv('Training.csv', index_col='prognosis')
+​
+#Replace the values in the imported file by pandas by the inbuilt function replace in pandas.
+​
+data.replace({'prognosis':{'Fungal infection':0,'Allergy':1,'GERD':2,'Chronic cholestasis':3,'Drug Reaction':4,
+    'Peptic ulcer diseae':5,'AIDS':6,'Diabetes ':7,'Gastroenteritis':8,'Bronchial Asthma':9,'Hypertension ':10,
+    'Migraine':11,'Cervical spondylosis':12,
+    'Paralysis (brain hemorrhage)':13,'Jaundice':14,'Malaria':15,'Chicken pox':16,'Dengue':17,'Typhoid':18,'hepatitis A':19,
+    'Hepatitis B':20,'Hepatitis C':21,'Hepatitis D':22,'Hepatitis E':23,'Alcoholic hepatitis':24,'Tuberculosis':25,
+    'Common Cold':26,'Pneumonia':27,'Dimorphic hemmorhoids(piles)':28,'Heart attack':29,'Varicose veins':30,'Hypothyroidism':31,
+    'Hyperthyroidism':32,'Hypoglycemia':33,'Osteoarthristis':34,'Arthritis':35,
+    '(vertigo) Paroymsal  Positional Vertigo':36,'Acne':37,'Urinary tract infection':38,'Psoriasis':39,
+    'Impetigo':40}},inplace=True)
+#df.head()
+Data1.head()
+itching	skin_rash	nodal_skin_eruptions	continuous_sneezing	shivering	chills	joint_pain	stomach_pain	acidity	ulcers_on_tongue	...	blackheads	scurring	skin_peeling	silver_like_dusting	small_dents_in_nails	inflammatory_nails	blister	red_sore_around_nose	yellow_crust_ooze	Unnamed: 133
+prognosis																					
+Fungal infection	1	1	1	0	0	0	0	0	0	0	...	0	0	0	0	0	0	0	0	0	NaN
+Fungal infection	0	1	1	0	0	0	0	0	0	0	...	0	0	0	0	0	0	0	0	0	NaN
+Fungal infection	1	0	1	0	0	0	0	0	0	0	...	0	0	0	0	0	0	0	0	0	NaN
+Fungal infection	1	1	0	0	0	0	0	0	0	0	...	0	0	0	0	0	0	0	0	0	NaN
+Fungal infection	1	1	1	0	0	0	0	0	0	0	...	0	0	0	0	0	0	0	0	0	NaN
+5 rows × 133 columns
+
+# Distribution graphs (histogram/bar graph) of column data
+​
+def plotPerColumnDistribution(d1, nGraphShown, nGraphPerRow):
+    nunique = d1.nunique()
+    d1 = d1[[col for col in data if nunique[col] > 1 and nunique[col] < 50]] # For displaying purposes, pick columns that have between 1 and 50 unique values
+    nRows, nCols = d1.shape
+    columnNames = list(d1)
+    nGraphRow = (nCols + nGraphPerRow - 1) / nGraphPerRow
+    plt.figure(num = None, figsize = (6 * nGraphPerRow, 8 * nGraphRow), dpi = 80, facecolor = 'w', edgecolor = 'k')
+    for i in range(min(nCols, nGraphShown)):
+        plt.subplot(nGraphRow, nGraphPerRow, i + 1)
+        columnDf = data.iloc[:, i]
+        if (not np.issubdtype(type(columnDf.iloc[0]), np.number)):
+            valueCounts = columnDf.value_counts()
+            valueCounts.plot.bar()
+        else:
+            columnDf.hist()
+        plt.ylabel('counts')
+        plt.xticks(rotation = 90)
+        plt.title(f'{columnNames[i]} (column {i})')
+    plt.tight_layout(pad = 1.0, w_pad = 1.0, h_pad = 1.0)
+    plt.show()
+# Scatter and density plots
+​
+def plotScatterMatrix(d1, plotSize, textSize):
+    d1 = d1.select_dtypes(include =[np.number]) # keep only numerical columns
+    # Remove rows and columns that would lead to df being singular
+    d1 = d1.dropna('columns')
+    d1 = d1[[cols for cols in data if data[cols].nunique() > 1]] # keep columns where there are more than 1 unique values
+    columnNames = list(data)
+    if len(columnNames) > 10: # reduce the number of columns for matrix inversion of kernel density plots
+        columnNames = columnNames[:10]
+    d1 = d1[columnNames]
+    ax = pd.plotting.scatter_matrix(d1, alpha=0.75, figsize=[plotSize, plotSize], diagonal='kde')
+    corrs = d1.corr().values
+    for i, j in zip(*plt.np.triu_indices_from(ax, k = 1)):
+        ax[i, j].annotate('Corr. coef = %.3f' % corrs[i, j], (0.8, 0.2), xycoords='axes fraction', ha='center', va='center', size=textSize)
+    plt.suptitle('Scatter and Density Plot')
+    plt.show()
+plotScatterMatrix(data, 20, 10)
+​
+C:\Users\chandana\AppData\Local\Temp\ipykernel_22044\612896274.py:6: FutureWarning: In a future version of pandas all arguments of DataFrame.dropna will be keyword-only.
+  d1 = d1.dropna('columns')
+
+X1= data[list_of_diseases]
+y1 = data[["prognosis"]]
+np.ravel(y1)
+print(X1)
+      back_pain  constipation  abdominal_pain  diarrhoea  mild_fever  \
+0             0             0               0          0           0   
+1             0             0               0          0           0   
+2             0             0               0          0           0   
+3             0             0               0          0           0   
+4             0             0               0          0           0   
+...         ...           ...             ...        ...         ...   
+4915          0             0               0          0           0   
+4916          0             0               0          0           0   
+4917          0             0               0          0           0   
+4918          0             0               0          0           0   
+4919          0             0               0          0           0   
+
+      yellow_urine  yellowing_of_eyes  acute_liver_failure  fluid_overload  \
+0                0                  0                    0               0   
+1                0                  0                    0               0   
+2                0                  0                    0               0   
+3                0                  0                    0               0   
+4                0                  0                    0               0   
+...            ...                ...                  ...             ...   
+4915             0                  0                    0               0   
+4916             0                  0                    0               0   
+4917             0                  0                    0               0   
+4918             0                  0                    0               0   
+4919             0                  0                    0               0   
+
+      swelling_of_stomach  ...  pus_filled_pimples  blackheads  scurring  \
+0                       0  ...                   0           0         0   
+1                       0  ...                   0           0         0   
+2                       0  ...                   0           0         0   
+3                       0  ...                   0           0         0   
+4                       0  ...                   0           0         0   
+...                   ...  ...                 ...         ...       ...   
+4915                    0  ...                   0           0         0   
+4916                    0  ...                   1           1         1   
+4917                    0  ...                   0           0         0   
+4918                    0  ...                   0           0         0   
+4919                    0  ...                   0           0         0   
+
+      skin_peeling  silver_like_dusting  small_dents_in_nails  \
+0                0                    0                     0   
+1                0                    0                     0   
+2                0                    0                     0   
+3                0                    0                     0   
+4                0                    0                     0   
+...            ...                  ...                   ...   
+4915             0                    0                     0   
+4916             0                    0                     0   
+4917             0                    0                     0   
+4918             1                    1                     1   
+4919             0                    0                     0   
+
+      inflammatory_nails  blister  red_sore_around_nose  yellow_crust_ooze  
+0                      0        0                     0                  0  
+1                      0        0                     0                  0  
+2                      0        0                     0                  0  
+3                      0        0                     0                  0  
+4                      0        0                     0                  0  
+...                  ...      ...                   ...                ...  
+4915                   0        0                     0                  0  
+4916                   0        0                     0                  0  
+4917                   0        0                     0                  0  
+4918                   1        0                     0                  0  
+4919                   0        1                     1                  1  
+
+[4920 rows x 95 columns]
+print(y1)
+​
+      prognosis
+0             0
+1             0
+2             0
+3             0
+4             0
+...         ...
+4915         36
+4916         37
+4917         38
+4918         39
+4919         40
+
+[4920 rows x 1 columns]
+#Reading the  testing.csv file
+testing=pd.read_csv("Testing.csv")
+​
+#Using inbuilt function replace in pandas for replacing the values
+​
+testing.replace({'prognosis':{'Fungal infection':0,'Allergy':1,'GERD':2,'Chronic cholestasis':3,'Drug Reaction':4,
+    'Peptic ulcer diseae':5,'AIDS':6,'Diabetes ':7,'Gastroenteritis':8,'Bronchial Asthma':9,'Hypertension ':10,
+    'Migraine':11,'Cervical spondylosis':12,
+    'Paralysis (brain hemorrhage)':13,'Jaundice':14,'Malaria':15,'Chicken pox':16,'Dengue':17,'Typhoid':18,'hepatitis A':19,
+    'Hepatitis B':20,'Hepatitis C':21,'Hepatitis D':22,'Hepatitis E':23,'Alcoholic hepatitis':24,'Tuberculosis':25,
+    'Common Cold':26,'Pneumonia':27,'Dimorphic hemmorhoids(piles)':28,'Heart attack':29,'Varicose veins':30,'Hypothyroidism':31,
+    'Hyperthyroidism':32,'Hypoglycemia':33,'Osteoarthristis':34,'Arthritis':35,
+    '(vertigo) Paroymsal  Positional Vertigo':36,'Acne':37,'Urinary tract infection':38,'Psoriasis':39,
+    'Impetigo':40}},inplace=True)
+testing.head()
+itching	skin_rash	nodal_skin_eruptions	continuous_sneezing	shivering	chills	joint_pain	stomach_pain	acidity	ulcers_on_tongue	...	blackheads	scurring	skin_peeling	silver_like_dusting	small_dents_in_nails	inflammatory_nails	blister	red_sore_around_nose	yellow_crust_ooze	prognosis
+0	1	1	1	0	0	0	0	0	0	0	...	0	0	0	0	0	0	0	0	0	0
+1	0	0	0	1	1	1	0	0	0	0	...	0	0	0	0	0	0	0	0	0	1
+2	0	0	0	0	0	0	0	1	1	1	...	0	0	0	0	0	0	0	0	0	2
+3	1	0	0	0	0	0	0	0	0	0	...	0	0	0	0	0	0	0	0	0	3
+4	1	1	0	0	0	0	0	1	0	0	...	0	0	0	0	0	0	0	0	0	4
+5 rows × 133 columns
+
+plotScatterMatrix(testing, 20, 10)
+C:\Users\chandana\AppData\Local\Temp\ipykernel_22044\612896274.py:6: FutureWarning: In a future version of pandas all arguments of DataFrame.dropna will be keyword-only.
+  d1 = d1.dropna('columns')
+
+X_test1= testing[list_of_diseases]
+y_test1 = testing[["prognosis"]]
+np.ravel(y_test1)
+print(X_test1)
+    back_pain  constipation  abdominal_pain  diarrhoea  mild_fever  \
+0           0             0               0          0           0   
+1           0             0               0          0           0   
+2           0             0               0          0           0   
+3           0             0               1          0           0   
+4           0             0               0          0           0   
+5           0             0               1          0           0   
+6           0             0               0          0           0   
+7           0             0               0          0           0   
+8           0             0               0          1           0   
+9           0             0               0          0           0   
+10          0             0               0          0           0   
+11          0             0               0          0           0   
+12          1             0               0          0           0   
+13          0             0               0          0           0   
+14          0             0               1          0           0   
+15          0             0               0          1           0   
+16          0             0               0          0           1   
+17          1             0               0          0           0   
+18          0             1               1          1           0   
+19          0             0               1          1           1   
+20          0             0               1          0           0   
+21          0             0               0          0           0   
+22          0             0               1          0           0   
+23          0             0               1          0           0   
+24          0             0               1          0           0   
+25          0             0               0          0           1   
+26          0             0               0          0           0   
+27          0             0               0          0           0   
+28          0             1               0          0           0   
+29          0             0               0          0           0   
+30          0             0               0          0           0   
+31          0             0               0          0           0   
+32          0             0               0          1           0   
+33          0             0               0          0           0   
+34          0             0               0          0           0   
+35          0             0               0          0           0   
+36          0             0               0          0           0   
+37          0             0               0          0           0   
+38          0             0               0          0           0   
+39          0             0               0          0           0   
+40          0             0               0          0           0   
+41          0             0               0          0           0   
+
+    yellow_urine  yellowing_of_eyes  acute_liver_failure  fluid_overload  \
+0              0                  0                    0               0   
+1              0                  0                    0               0   
+2              0                  0                    0               0   
+3              0                  1                    0               0   
+4              0                  0                    0               0   
+5              0                  0                    0               0   
+6              0                  0                    0               0   
+7              0                  0                    0               0   
+8              0                  0                    0               0   
+9              0                  0                    0               0   
+10             0                  0                    0               0   
+11             0                  0                    0               0   
+12             0                  0                    0               0   
+13             0                  0                    0               0   
+14             0                  0                    0               0   
+15             0                  0                    0               0   
+16             0                  0                    0               0   
+17             0                  0                    0               0   
+18             0                  0                    0               0   
+19             0                  1                    0               0   
+20             1                  1                    0               0   
+21             0                  1                    0               0   
+22             0                  1                    0               0   
+23             0                  1                    1               0   
+24             0                  0                    0               0   
+25             0                  1                    0               0   
+26             0                  0                    0               0   
+27             0                  0                    0               0   
+28             0                  0                    0               0   
+29             0                  0                    0               0   
+30             0                  0                    0               0   
+31             0                  0                    0               0   
+32             0                  0                    0               0   
+33             0                  0                    0               0   
+34             0                  0                    0               0   
+35             0                  0                    0               0   
+36             0                  0                    0               0   
+37             0                  0                    0               0   
+38             0                  0                    0               0   
+39             0                  0                    0               0   
+40             0                  0                    0               0   
+41             0                  0                    0               0   
+
+    swelling_of_stomach  ...  pus_filled_pimples  blackheads  scurring  \
+0                     0  ...                   0           0         0   
+1                     0  ...                   0           0         0   
+2                     0  ...                   0           0         0   
+3                     0  ...                   0           0         0   
+4                     0  ...                   0           0         0   
+5                     0  ...                   0           0         0   
+6                     0  ...                   0           0         0   
+7                     0  ...                   0           0         0   
+8                     0  ...                   0           0         0   
+9                     0  ...                   0           0         0   
+10                    0  ...                   0           0         0   
+11                    0  ...                   0           0         0   
+12                    0  ...                   0           0         0   
+13                    0  ...                   0           0         0   
+14                    0  ...                   0           0         0   
+15                    0  ...                   0           0         0   
+16                    0  ...                   0           0         0   
+17                    0  ...                   0           0         0   
+18                    0  ...                   0           0         0   
+19                    0  ...                   0           0         0   
+20                    0  ...                   0           0         0   
+21                    0  ...                   0           0         0   
+22                    0  ...                   0           0         0   
+23                    0  ...                   0           0         0   
+24                    1  ...                   0           0         0   
+25                    0  ...                   0           0         0   
+26                    0  ...                   0           0         0   
+27                    0  ...                   0           0         0   
+28                    0  ...                   0           0         0   
+29                    0  ...                   0           0         0   
+30                    0  ...                   0           0         0   
+31                    0  ...                   0           0         0   
+32                    0  ...                   0           0         0   
+33                    0  ...                   0           0         0   
+34                    0  ...                   0           0         0   
+35                    0  ...                   0           0         0   
+36                    0  ...                   0           0         0   
+37                    0  ...                   1           1         1   
+38                    0  ...                   0           0         0   
+39                    0  ...                   0           0         0   
+40                    0  ...                   0           0         0   
+41                    0  ...                   0           0         0   
+
+    skin_peeling  silver_like_dusting  small_dents_in_nails  \
+0              0                    0                     0   
+1              0                    0                     0   
+2              0                    0                     0   
+3              0                    0                     0   
+4              0                    0                     0   
+5              0                    0                     0   
+6              0                    0                     0   
+7              0                    0                     0   
+8              0                    0                     0   
+9              0                    0                     0   
+10             0                    0                     0   
+11             0                    0                     0   
+12             0                    0                     0   
+13             0                    0                     0   
+14             0                    0                     0   
+15             0                    0                     0   
+16             0                    0                     0   
+17             0                    0                     0   
+18             0                    0                     0   
+19             0                    0                     0   
+20             0                    0                     0   
+21             0                    0                     0   
+22             0                    0                     0   
+23             0                    0                     0   
+24             0                    0                     0   
+25             0                    0                     0   
+26             0                    0                     0   
+27             0                    0                     0   
+28             0                    0                     0   
+29             0                    0                     0   
+30             0                    0                     0   
+31             0                    0                     0   
+32             0                    0                     0   
+33             0                    0                     0   
+34             0                    0                     0   
+35             0                    0                     0   
+36             0                    0                     0   
+37             0                    0                     0   
+38             0                    0                     0   
+39             1                    1                     1   
+40             0                    0                     0   
+41             1                    0                     0   
+
+    inflammatory_nails  blister  red_sore_around_nose  yellow_crust_ooze  
+0                    0        0                     0                  0  
+1                    0        0                     0                  0  
+2                    0        0                     0                  0  
+3                    0        0                     0                  0  
+4                    0        0                     0                  0  
+5                    0        0                     0                  0  
+6                    0        0                     0                  0  
+7                    0        0                     0                  0  
+8                    0        0                     0                  0  
+9                    0        0                     0                  0  
+10                   0        0                     0                  0  
+11                   0        0                     0                  0  
+12                   0        0                     0                  0  
+13                   0        0                     0                  0  
+14                   0        0                     0                  0  
+15                   0        0                     0                  0  
+16                   0        0                     0                  0  
+17                   0        0                     0                  0  
+18                   0        0                     0                  0  
+19                   0        0                     0                  0  
+20                   0        0                     0                  0  
+21                   0        0                     0                  0  
+22                   0        0                     0                  0  
+23                   0        0                     0                  0  
+24                   0        0                     0                  0  
+25                   0        0                     0                  0  
+26                   0        0                     0                  0  
+27                   0        0                     0                  0  
+28                   0        0                     0                  0  
+29                   0        0                     0                  0  
+30                   0        0                     0                  0  
+31                   0        0                     0                  0  
+32                   0        0                     0                  0  
+33                   0        0                     0                  0  
+34                   0        0                     0                  0  
+35                   0        0                     0                  0  
+36                   0        0                     0                  0  
+37                   0        0                     0                  0  
+38                   0        0                     0                  0  
+39                   1        0                     0                  0  
+40                   0        1                     1                  1  
+41                   0        0                     1                  0  
+
+[42 rows x 95 columns]
+print(y_test1)
+    prognosis
+0           0
+1           1
+2           2
+3           3
+4           4
+5           5
+6           6
+7           7
+8           8
+9           9
+10         10
+11         11
+12         12
+13         13
+14         14
+15         15
+16         16
+17         17
+18         18
+19         19
+20         20
+21         21
+22         22
+23         23
+24         24
+25         25
+26         26
+27         27
+28         28
+29         29
+30         30
+31         31
+32         32
+33         33
+34         34
+35         35
+36         36
+37         37
+38         38
+39         39
+40         40
+41          0
+#list1 = DF['prognosis'].unique()
+def scatterplt(disease1):
+    x1 = ((DF.loc[disease1]).sum())#total sum of symptom reported for given disease
+    x1.drop(x1[x1==0].index,inplace=True)#droping symptoms with values 0
+    print(x1.values)
+    y1 = x1.keys()#storing nameof symptoms in y
+    print(len(x1))
+    print(len(y1))
+    plt.title(disease1)
+    plt.scatter(y1,x1.values)
+    plt.show()
+​
+def scatterinp(symptom1,symptom2,symptom3,symptom4,symptom5):
+    x1 = [symptom1,symptom2,symptom3,symptom4,symptom5]#storing input symptoms in y
+    y1 = [0,0,0,0,0]#creating and giving values to the input symptoms
+    if(symptom1!='Select Here'):
+        y1[0]=1
+    if(symptom2!='Select Here'):
+        y1[1]=1
+    if(symptom3!='Select Here'):
+        y1[2]=1
+    if(symptom4!='Select Here'):
+        y1[3]=1
+    if(symptom5!='Select Here'):
+        y1[4]=1
+    print(x1)
+    print(y1)
+    plt.scatter(x1,y1)
+    plt.show()
+To build the precision of the model, we have utilized four distinctive algorithms which are as per the following
+
+1) Decision Tree algorithm
+2) Random Forest algorithm
+3) KNearestNeighbour algorithm
+4) Naive Bayes algorithm
+
+DECISION TREE ALGORITHM
+
+1
+root = Tk()
+pred1=StringVar()
+def DecisionTree():
+    if len(NameEn.get()) == 0:
+        pred1.set(" ")
+        comp=messagebox.askokcancel("System","Kindly Fill the Name")
+        if comp:
+            root.mainloop()
+    elif((Symptom1.get()=="Select Here") or (Symptom2.get()=="Select Here")):
+        pred1.set(" ")
+        sym=messagebox.askokcancel("System","Kindly Fill atleast first two Symptoms")
+        if sym:
+            root.mainloop()
+    else:
+        from sklearn import tree
+​
+        clf3 = tree.DecisionTreeClassifier() 
+        clf3 = clf3.fit(X1,y1)
+​
+        from sklearn.metrics import classification_report,confusion_matrix,accuracy_score
+        y_pred1=clf3.predict(X_test1)
+        print("Decision Tree")
+        print("Accuracy")
+        print(accuracy_score(y_test1, y_pred1))
+        print(accuracy_score(y_test1, y_pred1,normalize=False))
+        print("Confusion matrix")
+        conf_matrix=confusion_matrix(y_test1,y_pred1)
+        print(conf_matrix)
+​
+        psymptoms = [Symptom1.get(),Symptom2.get(),Symptom3.get(),Symptom4.get(),Symptom5.get()]
+​
+        for k in range(0,len(list_of_diseases)):
+            for z in psymptoms:
+                if(z==list_of_diseases[k]):
+                    list_of_disease[k]=1
+​
+        inputtest = [list_of_disease]
+        predict = clf3.predict(inputtest)
+        predicted=predict[0]
+​
+        h='no'
+        for a in range(0,len(disease1)):
+            if(predicted == a):
+                h='yes'
+                break
+                
+        if (h=='yes'):
+            pred1.set(" ")
+            pred1.set(disease1[a])
+        else:
+            pred1.set(" ")
+            pred1.set("Not Found")
+        #Creating the database if not exists named as database.db and creating table if not exists named as DecisionTree using sqlite3 
+        import sqlite3 
+        conn = sqlite3.connect('database.db') 
+        c = conn.cursor() 
+        c.execute("CREATE TABLE IF NOT EXISTS DecisionTree(Name StringVar,Symtom1 StringVar,Symtom2 StringVar,Symtom3 StringVar,Symtom4 TEXT,Symtom5 TEXT,Disease StringVar)")
+        c.execute("INSERT INTO DecisionTree(Name,Symtom1,Symtom2,Symtom3,Symtom4,Symtom5,Disease) VALUES(?,?,?,?,?,?,?)",(NameEn.get(),Symptom1.get(),Symptom2.get(),Symptom3.get(),Symptom4.get(),Symptom5.get(),pred1.get()))
+        conn.commit()  
+        c.close() 
+        conn.close()
+        
+        #printing scatter plot of input symptoms
+        #printing scatter plot of disease predicted vs its symptoms
+        scatterinp(Symptom1.get(),Symptom2.get(),Symptom3.get(),Symptom4.get(),Symptom5.get())
+        scatterplt(pred1.get())
+​
+RANDOM FOREST ALGORITHM
+
+1
+pred2=StringVar()
+def randomforest():
+    if len(NameEn.get()) == 0:
+        pred1.set(" ")
+        comp=messagebox.askokcancel("System","Kindly Fill the Name")
+        if comp:
+            root.mainloop()
+    elif((Symptom1.get()=="Select Here") or (Symptom2.get()=="Select Here")):
+        pred1.set(" ")
+        sym=messagebox.askokcancel("System","Kindly Fill atleast first two Symptoms")
+        if sym:
+            root.mainloop()
+    else:
+        from sklearn.ensemble import RandomForestClassifier
+        clf4 = RandomForestClassifier(n_estimators=100)
+        clf4 = clf4.fit(X1,np.ravel(y1))
+​
+        # calculating accuracy 
+        from sklearn.metrics import classification_report,confusion_matrix,accuracy_score
+        y_pred1=clf4.predict(X_test1)
+        print("Random Forest")
+        print("Accuracy")
+        print(accuracy_score(y_test1, y_pred1))
+        print(accuracy_score(y_test1, y_pred1,normalize=False))
+        print("Confusion matrix")
+        conf_matrix=confusion_matrix(y_test1,y_pred1)
+        print(conf_matrix)
+    
+        psymptoms = [Symptom1.get(),Symptom2.get(),Symptom3.get(),Symptom4.get(),Symptom5.get()]
+​
+        for k in range(0,len(list_of_diseases)):
+            for z in psymptoms:
+                if(z==list_of_diseases[k]):
+                    list_of_disease[k]=1
+​
+        inputtest = [list_of_disease]
+        predict = clf4.predict(inputtest)
+        predicted=predict[0]
+​
+        h='no'
+        for a in range(0,len(disease1)):
+            if(predicted == a):
+                h='yes'
+                break
+        if (h=='yes'):
+            pred2.set(" ")
+            pred2.set(disease1[a])
+        else:
+            pred2.set(" ")
+            pred2.set("Not Found")
+         #Creating the database if not exists named as database.db and creating table if not exists named as RandomForest using sqlite3
+        import sqlite3 
+        conn = sqlite3.connect('database.db') 
+        c = conn.cursor() 
+        c.execute("CREATE TABLE IF NOT EXISTS RandomForest(Name StringVar,Symtom1 StringVar,Symtom2 StringVar,Symtom3 StringVar,Symtom4 TEXT,Symtom5 TEXT,Disease StringVar)")
+        c.execute("INSERT INTO RandomForest(Name,Symtom1,Symtom2,Symtom3,Symtom4,Symtom5,Disease) VALUES(?,?,?,?,?,?,?)",(NameEn.get(),Symptom1.get(),Symptom2.get(),Symptom3.get(),Symptom4.get(),Symptom5.get(),pred2.get()))
+        conn.commit()  
+        c.close() 
+        conn.close()
+        #printing scatter plot of disease predicted vs its symptoms
+        scatterplt(pred2.get())
+NAIVE-BAYES ALGORITHM
+
+1
+pred3=StringVar()
+def NaiveBayes():
+    if len(NameEn.get()) == 0:
+        pred1.set(" ")
+        comp=messagebox.askokcancel("System","Kindly Fill the Name")
+        if comp:
+            root.mainloop()
+    elif((Symptom1.get()=="Select Here") or (Symptom2.get()=="Select Here")):
+        pred1.set(" ")
+        sym=messagebox.askokcancel("System","Kindly Fill atleast first two Symptoms")
+        if sym:
+            root.mainloop()
+    else:
+        from sklearn.naive_bayes import GaussianNB
+        gnb = GaussianNB()
+        gnb=gnb.fit(X1,np.ravel(y1))
+​
+        from sklearn.metrics import classification_report,confusion_matrix,accuracy_score
+        y_pred1=gnb.predict(X_test1)
+        print("Naive Bayes")
+        print("Accuracy")
+        print(accuracy_score(y_test1, y_pred1))
+        print(accuracy_score(y_test1, y_pred1,normalize=False))
+        print("Confusion matrix")
+        conf_matrix=confusion_matrix(y_test1,y_pred1)
+        print(conf_matrix)
+​
+        psymptoms = [Symptom1.get(),Symptom2.get(),Symptom3.get(),Symptom4.get(),Symptom5.get()]
+        for k in range(0,len(list_of_diseases)):
+            for z in psymptoms:
+                if(z==list_of_diseases[k]):
+                    list_of_disease[k]=1
+​
+        inputtest = [list_of_disease]
+        predict = gnb.predict(inputtest)
+        predicted=predict[0]
+​
+        h='no'
+        for a in range(0,len(disease1)):
+            if(predicted == a):
+                h='yes'
+                break
+        if (h=='yes'):
+            pred3.set(" ")
+            pred3.set(disease1[a])
+        else:
+            pred3.set(" ")
+            pred3.set("Not Found")
+         #Creating the database if not exists named as database.db and creating table if not exists named as NaiveBayes using sqlite3
+        import sqlite3 
+        conn = sqlite3.connect('database.db') 
+        c = conn.cursor() 
+        c.execute("CREATE TABLE IF NOT EXISTS NaiveBayes(Name StringVar,Symtom1 StringVar,Symtom2 StringVar,Symtom3 StringVar,Symtom4 TEXT,Symtom5 TEXT,Disease StringVar)")
+        c.execute("INSERT INTO NaiveBayes(Name,Symtom1,Symtom2,Symtom3,Symtom4,Symtom5,Disease) VALUES(?,?,?,?,?,?,?)",(NameEn.get(),Symptom1.get(),Symptom2.get(),Symptom3.get(),Symptom4.get(),Symptom5.get(),pred3.get()))
+        conn.commit()  
+        c.close() 
+        conn.close()
+        #printing scatter plot of disease predicted vs its symptoms
+        scatterplt(pred3.get())
+Building the GUI
+#Tk class is used to create a root window
+root.configure(background='Ivory')
+root.title('Smart Disease Predictor System')
+root.resizable(0,0)
+''
+Symptom1 = StringVar()
+Symptom1.set("Select Here")
+​
+Symptom2 = StringVar()
+Symptom2.set("Select Here")
+​
+Symptom3 = StringVar()
+Symptom3.set("Select Here")
+​
+Symptom4 = StringVar()
+Symptom4.set("Select Here")
+​
+Symptom5 = StringVar()
+Symptom5.set("Select Here")
+Name = StringVar()
+​
+#
+prev_win=None
+def Reset():
+    global prev_win
+​
+    Symptom1.set("Select Here")
+    Symptom2.set("Select Here")
+    Symptom3.set("Select Here")
+    Symptom4.set("Select Here")
+    Symptom5.set("Select Here")
+    NameEn.delete(first=0,last=100)
+    pred1.set(" ")
+    pred2.set(" ")
+    pred3.set(" ")
+    #pred4.set(" ")
+    try:
+        prev_win.destroy()
+        prev_win=None
+    except AttributeError:
+        pass
+from tkinter import messagebox
+def Exit():
+    qExit=messagebox.askyesno("System","Do you want to exit the system")
+    
+    if qExit:
+        root.destroy()
+        exit()
+#Headings for the GUI written at the top of GUI
+w2 = Label(root, justify=LEFT, text="Disease Predictor using Machine Learning", fg="Black", bg="blue")
+w2.config(font=("Times",30,"bold italic"))
+w2.grid(row=1, column=0, columnspan=2, padx=100)
+w2.config(font=("Times",30,"bold italic"))
+w2.grid(row=2, column=0, columnspan=2, padx=100)
+#Label for the name
+NameLb = Label(root, text="Name of the Patient *", fg="Red", bg="blue")
+NameLb.config(font=("Times",15,"bold italic"))
+NameLb.grid(row=6, column=0, pady=15, sticky=W)
+#Creating Labels for the symtoms
+S1Lb = Label(root, text="Symptom 1 *", fg="Black", bg="blue")
+S1Lb.config(font=("Times",15,"bold italic"))
+S1Lb.grid(row=7, column=0, pady=10, sticky=W)
+​
+S2Lb = Label(root, text="Symptom 2 *", fg="Black", bg="blue")
+S2Lb.config(font=("Times",15,"bold italic"))
+S2Lb.grid(row=8, column=0, pady=10, sticky=W)
+​
+S3Lb = Label(root, text="Symptom 3", fg="Black",bg="blue")
+S3Lb.config(font=("Times",15,"bold italic"))
+S3Lb.grid(row=9, column=0, pady=10, sticky=W)
+​
+S4Lb = Label(root, text="Symptom 4", fg="Black", bg="blue")
+S4Lb.config(font=("Times",15,"bold italic"))
+S4Lb.grid(row=10, column=0, pady=10, sticky=W)
+​
+S5Lb = Label(root, text="Symptom 5", fg="Black", bg="blue")
+S5Lb.config(font=("Times",15,"bold italic"))
+S5Lb.grid(row=11, column=0, pady=10, sticky=W)
+#Labels for the different algorithms
+#print(l1)
+lrLb = Label(root, text="DecisionTree", fg="white", bg="red", width = 20)
+lrLb.config(font=("Times",15,"bold italic"))
+lrLb.grid(row=15, column=0, pady=10,sticky=W)
+​
+destreeLb = Label(root, text="RandomForest", fg="Red", bg="Orange", width = 20)
+destreeLb.config(font=("Times",15,"bold italic"))
+destreeLb.grid(row=17, column=0, pady=10, sticky=W)
+​
+ranfLb = Label(root, text="NaiveBayes", fg="White", bg="green", width = 20)
+ranfLb.config(font=("Times",15,"bold italic"))
+ranfLb.grid(row=19, column=0, pady=10, sticky=W)
+​
+OPTIONS = sorted(list_of_diseases)
+#Taking name as input from user
+NameEn = Entry(root, textvariable=Name)
+NameEn.grid(row=6, column=1)
+​
+#Taking Symptoms as input from the dropdown from the user
+Symp1 = OptionMenu(root, Symptom1,*OPTIONS)
+Symp1.grid(row=7, column=1)
+​
+Symp2 = OptionMenu(root, Symptom2,*OPTIONS)
+Symp2.grid(row=8, column=1)
+​
+Symp3 = OptionMenu(root, Symptom3,*OPTIONS)
+Symp3.grid(row=9, column=1)
+​
+Symp4 = OptionMenu(root, Symptom4,*OPTIONS)
+Symp4.grid(row=10, column=1)
+​
+Symp5 = OptionMenu(root, Symptom5,*OPTIONS)
+Symp5.grid(row=11, column=1)
+#Buttons for predicting the disease using different algorithms
+desition_tree = Button(root, text="Prediction 1", command=DecisionTree,bg="Red",fg="blue")
+desition_tree.config(font=("Times",15,"bold italic"))
+desition_tree.grid(row=6, column=3,padx=10)
+​
+random_forest = Button(root, text="Prediction 2", command=randomforest,bg="Light green",fg="green")
+random_forest.config(font=("Times",15,"bold italic"))
+random_forest.grid(row=7, column=3,padx=10)
+​
+Naive_bayes = Button(root, text="Prediction 3", command=NaiveBayes,bg="Blue",fg="yellow")
+Naive_bayes.config(font=("Times",15,"bold italic"))
+Naive_bayes.grid(row=8, column=3,padx=10)
+​
+reset = Button(root,text="Reset Inputs", command=Reset,bg="yellow",fg="purple",width=15)
+reset.config(font=("Times",15,"bold italic"))
+reset.grid(row=10,column=3,padx=10)
+​
+exit = Button(root,text="Exit System", command=Exit,bg="yellow",fg="purple",width=15)
+exit.config(font=("Times",15,"bold italic"))
+exit.grid(row=11,column=3,padx=10)
+#Showing the output of different aldorithms
+t1=Label(root,font=("Times",15,"bold italic"),text="Decision Tree",height=1,bg="Light green"
+         ,width=40,fg="red",textvariable=pred1,relief="sunken").grid(row=15, column=1, padx=10)
+​
+t2=Label(root,font=("Times",15,"bold italic"),text="Random Forest",height=1,bg="Purple"
+         ,width=40,fg="white",textvariable=pred2,relief="sunken").grid(row=17, column=1, padx=10)
+​
+t3=Label(root,font=("Times",15,"bold italic"),text="Naive Bayes",height=1,bg="red"
+         ,width=40,fg="orange",textvariable=pred3,relief="sunken").grid(row=19, column=1, padx=10)
+​
+root.mainloop()
+Decision Tree
+Accuracy
+0.9285714285714286
+39
+Confusion matrix
+[[1 0 0 ... 0 0 0]
+ [0 1 0 ... 0 0 0]
+ [0 0 1 ... 0 0 0]
+ ...
+ [0 0 0 ... 1 0 0]
+ [0 0 0 ... 0 1 0]
+ [0 0 0 ... 0 0 1]]
