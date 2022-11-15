@@ -10,7 +10,7 @@ from tkinter import LabelFrame, Label, Tk#, Canvas
 import numpy as np
 import pandas as pd
 import os
-#List of the symptoms is listed here in list l1.
+#List of the symptoms is listed here in list.
 ​
 list_of_diseases = ['back_pain','constipation','abdominal_pain','diarrhoea','mild_fever','yellow_urine',
     'yellowing_of_eyes','acute_liver_failure','fluid_overload','swelling_of_stomach',
